@@ -1,14 +1,15 @@
 package softwaredesign.projectManager;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
 public class test {
     String[] skillNames = {"Programming", "Driving", "Cooking", "Music"};
     String[] employeeNames = {"Bobby", "Sammy", "Pink man"};
+    String[] tasks = {"Wash car", "Cook food", "Eat", "Sleep", "Build a rocket", "Get a million dollars", "Do a moon dance"};
+    String[] status = {"Ready to start", "Executing", "Finished"};
 
     //Use string array to create and add skills to an arrayList.
     public List<Skill> createSkillList (String[] skillNames) {
@@ -27,6 +28,25 @@ public class test {
         return employeesList;
     }
 
+    public List<Task> taskList (List<Status> statuses, List<Employee> employees, String[] tasksNames) {
+        List<TaskList> taskList = new ArrayList<>();
+
+        for (String currentTaskName : tasksNames) {
+            List<Employee> assignedEmployees = new ArrayList<>();
+            Collections.shuffle(employees);
+            assignedEmployees.add(employees.get(0));
+            taskList.add(new Task (currentTaskName, 0d, assignedEmployees, statuses));
+        }
+    }
+
+    public List<Status> createStatus (String[] statuses) {
+        List<Status> statusList = new ArrayList<>();
+        for (String status : statuses) {
+            statusList.add(new Status(status));
+        }
+        return statusList;
+    }
+    List<Status> statusess = new ArrayList<>(createStatus(status));
     List<Skill> skills = new ArrayList<>(createSkillList(skillNames));
     List<Employee> employees = new ArrayList<>(createEmployeeList(skills, employeeNames));
 
@@ -43,5 +63,7 @@ public class test {
            System.out.println(currentSkill.getName());
        }
    }
+
+   @Test
 
 }

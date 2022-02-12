@@ -7,7 +7,6 @@ public class Project {
     private final String name;
 
     private final List<TaskList> taskLists;
-
     private final List<Employee> employees;
 
     //Need for uuid? Multiple projects?
@@ -40,8 +39,8 @@ public class Project {
 //                taskMap.put(it.next(), t);
 //            }
 //        }
-//a
 //        return taskMap;
+
 //    }
 
     public Project addTaskList(TaskList taskList) {

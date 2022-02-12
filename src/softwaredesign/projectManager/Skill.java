@@ -13,8 +13,4 @@ final public class Skill {
     public String getName() {
         return name;
     }
-
-    public UUID getUuid() {
-        return uuid;
-    }
 }

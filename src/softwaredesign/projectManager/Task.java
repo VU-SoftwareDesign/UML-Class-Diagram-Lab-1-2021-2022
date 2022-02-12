@@ -4,7 +4,6 @@ import java.util.UUID;
 
 public class Task {
     private final String name;
-    //ok what is skills here
     private final Skill[] skills;
     private final double estimatedTime;
     private final Employee assignedEmployee;
@@ -16,6 +15,9 @@ public class Task {
         this.estimatedTime = estimatedTime;
         this.assignedEmployee = assignedEmployee;
     }
+
+    //Add a method to ensure it is assigned to atleast one employee.
+    //Or perhaps keep track of all tasks, which one is assigned to which.
 
     public String getTaskName () {
         return name;

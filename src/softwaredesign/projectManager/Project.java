@@ -6,16 +6,14 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class Project {
-
-    //name? Project name?
-
+    //Need to add a method to set status of projects :- Tracking projects: mark tasks as "ready to start" -"executing" - "finished".
     private final String name;
 
     private final TaskList[] taskLists;
 
     private final Employee[] employees;
 
-    //Need for uuid?
+    //Need for uuid? Multiple projects?
 
     public Project(String name, TaskList[] taskLists, Employee[] employees) {
         this.name = name;

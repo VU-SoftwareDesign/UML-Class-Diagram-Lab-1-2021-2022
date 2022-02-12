@@ -1,32 +1,34 @@
 package softwaredesign.projectManager;
 import java.util.*;
 import java.util.UUID;
+import java.util.ArrayList; // import the ArrayList class
 
 public class Employee {
 
     private final String name;
     private final UUID uuid;
-    private final double maxWorkHours;
-    private final Skill[] skills;
+    private final double workedHours;
+    private final List<Skill> skills;
 
     //Limit maxWorkHours to 40, add a boolean to ensure it does not top it.
 
-    public Employee(String name, UUID uuid, double maxWorkHours, Skill[] skills) {
+    public Employee(String name, double maxWorkHours, List<Skill> skills) {
         this.name = name;
-        this.uuid = uuid;
-        this.maxWorkHours = maxWorkHours;
+        this.workedHours = maxWorkHours;
         this.skills = skills;
+        this.uuid = UUID.randomUUID();
     }
 
     //Extra constructor
     public Employee(String name) {
         this.name = name;
         this.uuid = UUID.randomUUID();
-        this.maxWorkHours = 0D;
+        this.workedHours = 0D;
+        this.skills = new ArrayList<>();
     }
 
     public Employee setName(String newName) {
-        return new Employee(newName, uuid, maxWorkHours, skills);
+        return new Employee(newName, workedHours, skills);
     }
 
     public String getName() {
@@ -34,15 +36,15 @@ public class Employee {
     }
 
     public Employee setHours(Double hours) {
-        return new Employee(name, uuid, hours, skills);
+        return new Employee(name, hours, skills);
     }
 
     public Double getHours() {
-        return maxWorkHours;
+        return workedHours;
     }
 
     public Employee setSkills(List<Skill> newSkills) {
-        return new Employee(name, uuid, maxWorkHours, newSkills);
+        return new Employee(name, workedHours, newSkills);
     }
 
     public List<Skill> getSkills() {
@@ -53,29 +55,32 @@ public class Employee {
         return uuid;
     }
 
-    //To do: Create a skillList class to handle all the skill related methods
     public Employee removeSkill(Skill skill) {
-        Skill[] newSkills = new Skill[skills.length - 1];
-        int newIndex = 0;
-        for (Skill value : newSkills) {
-            if (value != skill) {
-                newSkills[newIndex] = value;
-                newIndex++;
+        List<Skill> updatedSkills = new ArrayList<> (skills);
+        for (Skill currentSkill : updatedSkills) {
+            if (currentSkill == skill) {
+                updatedSkills.remove(skill);
             }
+            //Use catch
+            else System.out.println("Skill not found");
         }
-        return new Employee(name, uuid, maxWorkHours, newSkills);
+        return new Employee(name, workedHours, updatedSkills);
     }
 
     public Employee addSkill(Skill skill) {
-        Skill[] newSkills = Arrays.copyOf(skills, skills.length + 1);
-        newSkills[newSkills.length - 1] = skill;
-
-        return new Employee(name, uuid, maxWorkHours, newSkills);
+        List<Skill> updatedSkills = new ArrayList<> (skills);
+        updatedSkills.add(skill);
+        return new Employee(name, workedHours, updatedSkills);
     }
 
     public String print () {
-        String messageToBePrinted = "Employee name:" + name + "\nHours worked: " + maxWorkHours;
-        System.out.println(messageToBePrinted);
+        String messageToBePrinted = "Employee name:" + name + "\nHours worked: " + workedHours + "\nSkills: ";
+        System.out.print(messageToBePrinted);
+
+        for (Skill currentSkill : skills) {
+            System.out.print(currentSkill.getName() + " ");
+        }
+        System.out.println("\n");
         return messageToBePrinted;
     }
 }

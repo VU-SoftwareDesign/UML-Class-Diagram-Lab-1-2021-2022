@@ -1,21 +1,18 @@
 package softwaredesign.projectManager;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class Project {
     //Need to add a method to set status of projects :- Tracking projects: mark tasks as "ready to start" -"executing" - "finished".
     private final String name;
 
-    private final TaskList[] taskLists;
+    private final List<TaskList> taskLists;
 
-    private final Employee[] employees;
+    private final List<Employee> employees;
 
     //Need for uuid? Multiple projects?
 
-    public Project(String name, TaskList[] taskLists, Employee[] employees) {
+    public Project(String name, List<TaskList> taskLists, List<Employee> employees) {
         this.name = name;
         this.taskLists = taskLists;
         this.employees = employees;
@@ -29,60 +26,58 @@ public class Project {
         return new Project(name, taskLists, employees);
     }
 
-    public TaskList[] getTaskLists() {
+    public List<TaskList> getTaskLists() {
         return taskLists;
     }
 
-    public Map<Task, TaskList> getAllTasks() {
-        Map<Task, TaskList> taskMap = new HashMap<>();
-
-        for (TaskList t : taskLists) {
-            Iterator<Task> it = t.iterator();
-
-            while (it.hasNext()) {
-                taskMap.put(it.next(), t);
-            }
-        }
-
-        return taskMap;
-    }
-
-    public Project setTaskList(TaskList[] taskLists) {
-        return new Project(name, taskLists, employees);
-    }
+//    public Map<Task, TaskList> getAllTasks() {
+//        Map<Task, TaskList> taskMap = new HashMap<>();
+//
+//        for (TaskList t : taskLists) {
+//            Iterator<Task> it = t.iterator();
+//
+//            while (it.hasNext()) {
+//                taskMap.put(it.next(), t);
+//            }
+//        }
+//a
+//        return taskMap;
+//    }
 
     public Project addTaskList(TaskList taskList) {
-        TaskList[] newTaskLists = Arrays.copyOf(this.taskLists, this.taskLists.length + 1);
-        newTaskLists[newTaskLists.length - 1] = taskList;
-        return setTaskList(newTaskLists);
+        List<TaskList> copiedTaskList = new ArrayList<>(taskLists);
+        copiedTaskList.add(taskList);
+        return new Project(name, copiedTaskList, employees);
     }
 
-    public Project addWorker(Employee worker) {
-        Employee[] workers = Arrays.copyOf(this.employees, this.employees.length + 1);
-        workers[workers.length - 1] = worker;
-        return new Project(name, taskLists, workers);
+    public Project addWorker(Employee employee) {
+        List<Employee> copiedEmployeeList = new ArrayList<>(employees);
+        copiedEmployeeList.add(employee);
+        return new Project(name, taskLists, copiedEmployeeList);
     }
 
     public Project replaceTaskList(TaskList oldTaskList, TaskList newTaskList) {
-        TaskList[] newTaskLists = taskLists.clone();
-        for(int i = 0; i < taskLists.length; i++) {
-            if(taskLists[i] == oldTaskList) {
-                newTaskLists[i] = newTaskList;
-                return setTaskList(newTaskLists);
+        int index = 0;
+        List<TaskList> copiedTaskLists = taskLists;
+        for (TaskList currentTL : taskLists) {
+            if (currentTL == oldTaskList) {
+                copiedTaskLists.remove(oldTaskList);
+                copiedTaskLists.add(index, newTaskList);
             }
+            //Use try catch here
+            else System.out.println("Not found");
         }
-        throw new IllegalStateException();
+        return new Project(name, copiedTaskLists, employees);
     }
 
 
     public Project moveTask(Task task, TaskList previousTaskList, TaskList currentTaskList) {
         TaskList oldTaskList = previousTaskList.removeTask(task);
         TaskList newTaskList = currentTaskList.addTask(task);
-
         return replaceTaskList(previousTaskList, oldTaskList).replaceTaskList(currentTaskList, newTaskList);
     }
 
-    public Employee[] getEmployees() {
+    public List<Employee> getEmployees() {
         return employees;
     }
 }

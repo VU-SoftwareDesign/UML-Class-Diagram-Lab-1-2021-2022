@@ -1,33 +1,27 @@
 package softwaredesign.projectManager;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class Task {
     private final String name;
+    //Why are skills here?
     private final Skill[] skills;
     private final double estimatedTime;
-    private final Employee assignedEmployee;
     private static final UUID uuid = UUID.randomUUID();
-
-    public Task (String name, Skill[] skills, double estimatedTime, Employee assignedEmployee) {
+    private final List<Employee> assignedEmployees;
+    public Task (String name, Skill[] skills, double estimatedTime, List<Employee> assignedEmployees) {
         this.name = name;
         this.skills = skills;
         this.estimatedTime = estimatedTime;
-        this.assignedEmployee = assignedEmployee;
+        this.assignedEmployees = assignedEmployees;
     }
-
-    //Add a method to ensure it is assigned to atleast one employee.
-    //Or perhaps keep track of all tasks, which one is assigned to which.
 
     public String getTaskName () {
         return name;
     }
-
-    //Look into immutable lists and how to handle them
-//    public Task addSkill (Skill skill) {
-//        final List<Skill> updatesSkills = new ArrayList<>();
-//        return new Task(name, , estimatedTime, assignedEmployee);
-//    }
 
     public void printSkills () {
         System.out.println("Current skills:\n");
@@ -36,12 +30,8 @@ public class Task {
         }
     }
 
-//    public Task removeSkill (Skill skill) {
-//
-//    }
-
     public Task setEstimatedTime (double estimatedTime) {
-        return new Task(name, skills , estimatedTime, assignedEmployee);
+        return new Task(name, skills , estimatedTime, assignedEmployees);
     }
 
     public double getEstimateTime () {
@@ -49,12 +39,18 @@ public class Task {
     }
 
     //setAssignedEmployee instead of assign employee
-    public Task setAssignedEmployee (Employee employee) {
-        return new Task(name, skills , estimatedTime, employee);
+    public Task setAssignedEmployee_s (List<Employee> newAssignedEmployee_s) {
+        return new Task(name, skills , estimatedTime, newAssignedEmployee_s);
     }
 
-    public Employee getAssignedEmployee () {
-        return assignedEmployee;
+    public List<Employee> getAssignedEmployee_s () {
+        return assignedEmployees;
+    }
+
+    public Task assignEmployeeToTask (Employee employee) {
+        List<Employee> copiedAssignedEmployees = new ArrayList<> (assignedEmployees);
+        copiedAssignedEmployees.add(employee);
+        return new Task(name, skills , estimatedTime, copiedAssignedEmployees);
     }
 
     public UUID getUuid() {

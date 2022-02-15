@@ -2,7 +2,6 @@ package softwaredesign.projectManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public class Task {
@@ -22,24 +21,24 @@ public class Task {
 
 
     public String getTaskName () {
-        return name;
+        return this.name;
     }
 
     public Task setEstimatedTime (double estimatedTime) {
-        return new Task(name, estimatedTime, assignedEmployees, status, requiredSkills);
+        return new Task(this.name, estimatedTime, this.assignedEmployees, this.status, this.requiredSkills);
     }
 
     public double getEstimateTime () {
-        return estimatedTime;
+        return this.estimatedTime;
     }
 
     //setAssignedEmployee instead of assign employee
     public Task setAssignedEmployees (List<Employee> setAssignedEmployees) {
-        return new Task(name , estimatedTime, setAssignedEmployees, status, requiredSkills);
+        return new Task(this.name , this.estimatedTime, setAssignedEmployees, this.status, this.requiredSkills);
     }
 
     public List<Employee> getAssignedEmployees () {
-        return assignedEmployees;
+        return this.assignedEmployees;
     }
 
     public Task assignEmployeeToTask (Employee employee) {
@@ -49,27 +48,26 @@ public class Task {
         if (isAssigned(employee)) {
             //Need to throw exceptions here
             System.out.println("Employee already assigned");
-            return new Task(this.name , estimatedTime, assignedEmployees, status, requiredSkills);
+            return new Task(this.name , this.estimatedTime, this.assignedEmployees, this.status, this.requiredSkills);
         }
         else {
             List<Employee> copiedAssignedEmployees = new ArrayList<>(assignedEmployees);
             copiedAssignedEmployees.add(employee);
-            return new Task(name , estimatedTime, copiedAssignedEmployees, status, requiredSkills);
+            return new Task(this.name , this.estimatedTime, copiedAssignedEmployees, this.status, this.requiredSkills);
         }
     }
 
     //method to replace any of the given lists? like to replace the assigned employee list
-
     public List<Skill> getRequiredSkills () { return requiredSkills;}
 
     public Task addRequiredSkill (Skill skill) {
         List<Skill> copiedRequiredSkill = new ArrayList<> (requiredSkills);
         copiedRequiredSkill.add(skill);
-        return new Task(name , estimatedTime, assignedEmployees, status, copiedRequiredSkill);
+        return new Task(this.name , this.estimatedTime, this.assignedEmployees, this.status, copiedRequiredSkill);
     }
 
     public Task setStatus (Status.Progress newStatus) {
-        return new Task (name, estimatedTime, assignedEmployees, new Status(newStatus), requiredSkills);
+        return new Task (this.name, this.estimatedTime, this.assignedEmployees, new Status(newStatus), this.requiredSkills);
     }
 
     public Status getStatus () {
@@ -81,11 +79,11 @@ public class Task {
     }
 
     public UUID getUuid() {
-        return uuid;
+        return this.uuid;
     }
 
     public boolean taskAssigned () {
-        return assignedEmployees.size() >= 1;
+        return this.assignedEmployees.size() >= 1;
     }
 
     public boolean isAssigned (Employee employee) {

@@ -2,7 +2,6 @@ package softwaredesign.projectManager;
 
 import java.util.*;
 
-//this has to be singletonne.
 //Each task has to be assigned to atleast one employee. Map is a good option here.
 public class TaskList {
     //can use map to with uuid .
@@ -27,17 +26,17 @@ public class TaskList {
     }
 
     public TaskList addTask(Task task) {
-        List<Task> copiedTaskList = new ArrayList<>(tasks);
+        List<Task> copiedTaskList = new ArrayList<>(this.tasks);
         copiedTaskList.add(task);
-        return new TaskList(name, copiedTaskList);
+        return new TaskList(this.name, copiedTaskList);
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public boolean contains(UUID taskId) {
-        for (Task t : tasks) {
+        for (Task t : this.tasks) {
             if (t.getUuid().equals(taskId)) {
                 return true;
             }
@@ -46,33 +45,31 @@ public class TaskList {
     }
 
     public TaskList replaceTask(UUID oldTaskId, Task newTask) {
-        List<Task> copiedTaskList = new ArrayList<>(tasks);
+        List<Task> copiedTaskList = new ArrayList<>(this.tasks);
         int index = 0;
-        for (Task t : tasks) {
+        for (Task t : copiedTaskList) {
             if (t.getUuid().equals(oldTaskId)) {
                 copiedTaskList.remove(t);
                 copiedTaskList.add(index, newTask);
             }
             index++;
         }
-        return new TaskList(name, copiedTaskList);
+        return new TaskList(this.name, copiedTaskList);
     }
 
     public TaskList removeTask(Task task) {
         List<Task> copiedTaskList = new ArrayList<>(tasks);
-        int index = 0;
         for (Task currentTask : tasks) {
             if (currentTask == task) {
                 copiedTaskList.remove(task);
             }
-            index++;
+            else System.out.println("Task not found");
         }
-
-        return new TaskList(name, copiedTaskList);
+        return new TaskList(this.name, copiedTaskList);
     }
 
     public UUID getUuid() {
-        return uuid;
+        return this.uuid;
     }
 //    @Override
 //    public Iterator<Task> iterator() {

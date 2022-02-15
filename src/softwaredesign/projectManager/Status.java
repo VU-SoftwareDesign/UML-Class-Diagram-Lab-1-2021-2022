@@ -37,6 +37,6 @@ public class Status {
     }
 
     public void printStatus () {
-        System.out.println(currentStatus);
+        System.out.println(this.currentStatus);
     }
 }

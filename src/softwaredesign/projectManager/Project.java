@@ -5,18 +5,17 @@ import java.util.*;
 public class Project {
     //Use "this" for creating new instance of class in the parameters
 
-    //Need to add a method to set status of projects :- Tracking projects: mark tasks as "ready to start" -"executing" - "finished".
     private final String name;
+    private final UUID uuid;
 
     private final List<TaskList> taskLists;
     private final List<Employee> employees;
-
-    //Need for uuid? Multiple projects?
 
     public Project(String name, List<TaskList> taskLists, List<Employee> employees) {
         this.name = name;
         this.taskLists = taskLists;
         this.employees = employees;
+        this.uuid = UUID.randomUUID();
     }
 
     public String getName() {
@@ -24,11 +23,11 @@ public class Project {
     }
 
     public Project setName(String name) {
-        return new Project(name, taskLists, employees);
+        return new Project(name, this.taskLists, this.employees);
     }
 
     public List<TaskList> getTaskLists() {
-        return taskLists;
+        return this.taskLists;
     }
 
 //    public Map<Task, TaskList> getAllTasks() {
@@ -48,19 +47,19 @@ public class Project {
     public Project addTaskList(TaskList taskList) {
         List<TaskList> copiedTaskList = new ArrayList<>(taskLists);
         copiedTaskList.add(taskList);
-        return new Project(name, copiedTaskList, employees);
+        return new Project(this.name, copiedTaskList, this.employees);
     }
 
     public Project addWorker(Employee employee) {
         List<Employee> copiedEmployeeList = new ArrayList<>(employees);
         copiedEmployeeList.add(employee);
-        return new Project(name, taskLists, copiedEmployeeList);
+        return new Project(this.name, this.taskLists, copiedEmployeeList);
     }
 
     public Project replaceTaskList(TaskList oldTaskList, TaskList newTaskList) {
         int index = 0;
-        List<TaskList> copiedTaskLists = taskLists;
-        for (TaskList currentTL : taskLists) {
+        List<TaskList> copiedTaskLists = this.taskLists;
+        for (TaskList currentTL : copiedTaskLists) {
             if (currentTL == oldTaskList) {
                 copiedTaskLists.remove(oldTaskList);
                 copiedTaskLists.add(index, newTaskList);
@@ -68,7 +67,7 @@ public class Project {
             //Use try catch here
             else System.out.println("Not found");
         }
-        return new Project(name, copiedTaskLists, employees);
+        return new Project(this.name, copiedTaskLists, this.employees);
     }
 
 
@@ -79,6 +78,10 @@ public class Project {
     }
 
     public List<Employee> getEmployees() {
-        return employees;
+        return this.employees;
+    }
+
+    public UUID getUUID () {
+        return this.uuid;
     }
 }

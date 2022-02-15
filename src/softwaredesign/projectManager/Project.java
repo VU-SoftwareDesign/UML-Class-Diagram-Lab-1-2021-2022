@@ -72,7 +72,7 @@ public class Project {
 
 
     public Project moveTask(Task task, TaskList previousTaskList, TaskList currentTaskList) {
-        TaskList oldTaskList = previousTaskList.removeTask(task);
+        TaskList oldTaskList = previousTaskList.removeTask(task.getUuid());
         TaskList newTaskList = currentTaskList.addTask(task);
         return replaceTaskList(previousTaskList, oldTaskList).replaceTaskList(currentTaskList, newTaskList);
     }

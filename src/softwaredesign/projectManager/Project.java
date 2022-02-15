@@ -1,24 +1,21 @@
 package softwaredesign.projectManager;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class Project {
-    //Need to add a method to set status of projects :- Tracking projects: mark tasks as "ready to start" -"executing" - "finished".
+    //Use "this" for creating new instance of class in the parameters
+
     private final String name;
+    private final UUID uuid;
 
-    private final TaskList[] taskLists;
+    private final List<TaskList> taskLists;
+    private final List<Employee> employees;
 
-    private final Employee[] employees;
-
-    //Need for uuid? Multiple projects?
-
-    public Project(String name, TaskList[] taskLists, Employee[] employees) {
+    public Project(String name, List<TaskList> taskLists, List<Employee> employees) {
         this.name = name;
         this.taskLists = taskLists;
         this.employees = employees;
+        this.uuid = UUID.randomUUID();
     }
 
     public String getName() {
@@ -26,63 +23,65 @@ public class Project {
     }
 
     public Project setName(String name) {
-        return new Project(name, taskLists, employees);
+        return new Project(name, this.taskLists, this.employees);
     }
 
-    public TaskList[] getTaskLists() {
-        return taskLists;
+    public List<TaskList> getTaskLists() {
+        return this.taskLists;
     }
 
-    public Map<Task, TaskList> getAllTasks() {
-        Map<Task, TaskList> taskMap = new HashMap<>();
+//    public Map<Task, TaskList> getAllTasks() {
+//        Map<Task, TaskList> taskMap = new HashMap<>();
+//
+//        for (TaskList t : taskLists) {
+//            Iterator<Task> it = t.iterator();
+//
+//            while (it.hasNext()) {
+//                taskMap.put(it.next(), t);
+//            }
+//        }
+//        return taskMap;
 
-        for (TaskList t : taskLists) {
-            Iterator<Task> it = t.iterator();
-
-            while (it.hasNext()) {
-                taskMap.put(it.next(), t);
-            }
-        }
-
-        return taskMap;
-    }
-
-    public Project setTaskList(TaskList[] taskLists) {
-        return new Project(name, taskLists, employees);
-    }
+//    }
 
     public Project addTaskList(TaskList taskList) {
-        TaskList[] newTaskLists = Arrays.copyOf(this.taskLists, this.taskLists.length + 1);
-        newTaskLists[newTaskLists.length - 1] = taskList;
-        return setTaskList(newTaskLists);
+        List<TaskList> copiedTaskList = new ArrayList<>(taskLists);
+        copiedTaskList.add(taskList);
+        return new Project(this.name, copiedTaskList, this.employees);
     }
 
-    public Project addWorker(Employee worker) {
-        Employee[] workers = Arrays.copyOf(this.employees, this.employees.length + 1);
-        workers[workers.length - 1] = worker;
-        return new Project(name, taskLists, workers);
+    public Project addWorker(Employee employee) {
+        List<Employee> copiedEmployeeList = new ArrayList<>(employees);
+        copiedEmployeeList.add(employee);
+        return new Project(this.name, this.taskLists, copiedEmployeeList);
     }
 
     public Project replaceTaskList(TaskList oldTaskList, TaskList newTaskList) {
-        TaskList[] newTaskLists = taskLists.clone();
-        for(int i = 0; i < taskLists.length; i++) {
-            if(taskLists[i] == oldTaskList) {
-                newTaskLists[i] = newTaskList;
-                return setTaskList(newTaskLists);
+        int index = 0;
+        List<TaskList> copiedTaskLists = this.taskLists;
+        for (TaskList currentTL : copiedTaskLists) {
+            if (currentTL == oldTaskList) {
+                copiedTaskLists.remove(oldTaskList);
+                copiedTaskLists.add(index, newTaskList);
             }
+            //Use try catch here
+            else System.out.println("Not found");
         }
-        throw new IllegalStateException();
+        return new Project(this.name, copiedTaskLists, this.employees);
     }
 
 
     public Project moveTask(Task task, TaskList previousTaskList, TaskList currentTaskList) {
-        TaskList oldTaskList = previousTaskList.removeTask(task);
+        TaskList oldTaskList = previousTaskList.removeTask(task.getUuid());
         TaskList newTaskList = currentTaskList.addTask(task);
-
         return replaceTaskList(previousTaskList, oldTaskList).replaceTaskList(currentTaskList, newTaskList);
     }
 
-    public Employee[] getEmployees() {
-        return employees;
+    public List<Employee> getEmployees() {
+        return this.employees;
+    }
+
+    public UUID getUUID () {
+        return this.uuid;
     }
 }

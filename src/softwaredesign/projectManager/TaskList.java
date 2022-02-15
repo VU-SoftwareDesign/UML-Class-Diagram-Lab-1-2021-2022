@@ -1,83 +1,63 @@
 package softwaredesign.projectManager;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.UUID;
+import java.util.*;
 
-//this has to be singletonne
+//Each task has to be assigned to atleast one employee. Map is a good option here.
 public class TaskList {
+    //can use map to with uuid .
 
     private final String name;
 
     //Changed from list to task
-    private final Task[] tasks;
+    private final Map<UUID, Task> tasks;
 
-    private final UUID  uuid;
+    private final UUID uuid;
 
-    public TaskList(String name, Task... tasks) {
+    public TaskList(String name, Map<UUID, Task> tasks) {
         this.name = name;
         this.tasks = tasks;
         this.uuid = UUID.randomUUID();
     }
 
-    public TaskList(String name, UUID id, Task... tasks) {
+    public TaskList(String name) {
         this.name = name;
-        this.tasks = tasks;
-        this.uuid = id;
+        this.uuid = UUID.randomUUID();
+        this.tasks = new HashMap<>();
     }
 
     public TaskList addTask(Task task) {
-        Task[] newTasks = Arrays.copyOf(tasks, tasks.length + 1);
-        newTasks[newTasks.length - 1] = task;
-
-        return new TaskList(name, uuid, newTasks);
+        Map<UUID, Task> copiedTaskList = new HashMap<>(this.tasks);
+        copiedTaskList.put(UUID.randomUUID(), task);
+        return new TaskList(this.name, copiedTaskList);
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public boolean contains(UUID taskId) {
-        for (Task t : tasks) {
-            if (t.getUuid().equals(taskId)) {
-                return true;
-            }
-        }
-        return false;
+        return this.tasks.containsKey(taskId);
     }
 
     public TaskList replaceTask(UUID oldTaskId, Task newTask) {
-        Task[] newTasks = new Task[tasks.length];
-
-        for (int index = 0; index < tasks.length; index++) {
-            if (tasks[index].getUuid().equals(oldTaskId)) {
-                newTasks[index] = newTask;
-                break;
-            }
+        Map<UUID, Task> copiedTaskList = new HashMap<>(this.tasks);
+        if (copiedTaskList.containsKey(oldTaskId)) {
+            copiedTaskList.remove(oldTaskId);
+            copiedTaskList.put(UUID.randomUUID(), newTask);
         }
-
-        return new TaskList(name, uuid, newTasks);
+        return new TaskList(this.name, copiedTaskList);
     }
 
-    public TaskList removeTask(Task task) {
-        Task[] newTasks = new Task[tasks.length - 1];
-        int newIndex = 0;
-
-        for (Task value : tasks) {
-            if (value != task) {
-                newTasks[newIndex] = value;
-                newIndex++;
-            }
+    public TaskList removeTask(UUID oldTaskId) {
+        Map<UUID, Task> copiedTaskList = new HashMap<>(this.tasks);
+        if (copiedTaskList.containsKey(oldTaskId)) {
+            copiedTaskList.remove(oldTaskId);
         }
-
-        return new TaskList(name, uuid, newTasks);
+        else {System.out.println("Task not found");}
+        return new TaskList(this.name, copiedTaskList);
     }
 
     public UUID getUuid() {
-        return uuid;
-    }
-//    @Override
-    public Iterator<Task> iterator() {
-        return Arrays.stream(tasks).iterator();
+        return this.uuid;
     }
 }

@@ -1,4 +1,6 @@
 
-t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Å›¤8Òã¿§î/
-^
-java:S1124"EReorder the modifiers to comply with the Java Language Specification.(¾¡½“ùÿÿÿÿ
+v	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Å›¤8Òã¿§î/
+`
+java:S1124"EReorder the modifiers to comply with the Java Language Specification.(¾¡½“ùÿÿÿÿ
+J
+java:S1068"(Remove this unused "uuid" private field.(Ğ¸¥Ôşÿÿÿÿ8¾ÎÙ³ï/

@@ -5,6 +5,7 @@ import java.util.*;
 //this has to be singletonne.
 //Each task has to be assigned to atleast one employee. Map is a good option here.
 public class TaskList {
+    //can use map to with uuid .
 
     private final String name;
 

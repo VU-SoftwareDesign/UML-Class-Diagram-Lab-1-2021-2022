@@ -6,10 +6,11 @@ import java.util.*;
 import static org.junit.Assert.assertEquals;
 
 public class test {
+    //Think where to fit for polymorphism
+
     String[] skillNames = {"Programming", "Driving", "Cooking", "Music"};
     String[] employeeNames = {"Bobby", "Sammy", "Pink man"};
     String[] tasks = {"Wash car", "Cook food", "Eat", "Sleep", "Build a rocket", "Get a million dollars", "Do a moon dance"};
-    String[] status = {"Ready to start", "Executing", "Finished"};
 
     //Use string array to create and add skills to an arrayList.
     public List<Skill> createSkillList (String[] skillNames) {
@@ -28,27 +29,31 @@ public class test {
         return employeesList;
     }
 
-    public List<Task> taskList (List<Status> statuses, List<Employee> employees, String[] tasksNames) {
-        List<TaskList> taskList = new ArrayList<>();
+    public List<Task> createTasks (List<Employee> employees, String[] tasksNames, List<Skill> skills) {
+        List<Task> tasks = new ArrayList<>();
 
         for (String currentTaskName : tasksNames) {
             List<Employee> assignedEmployees = new ArrayList<>();
             Collections.shuffle(employees);
             assignedEmployees.add(employees.get(0));
-            taskList.add(new Task (currentTaskName, 0d, assignedEmployees, statuses));
+            tasks.add(new Task (currentTaskName, 0d, assignedEmployees, new Status(Status.Progress.READY), skills) );
         }
+        return tasks;
     }
+
+//    public List<TaskList> createTaskList
 
     public List<Status> createStatus (String[] statuses) {
         List<Status> statusList = new ArrayList<>();
         for (String status : statuses) {
-            statusList.add(new Status(status));
+            statusList.add(new Status(Status.Progress.READY));
         }
         return statusList;
     }
-    List<Status> statusess = new ArrayList<>(createStatus(status));
     List<Skill> skills = new ArrayList<>(createSkillList(skillNames));
     List<Employee> employees = new ArrayList<>(createEmployeeList(skills, employeeNames));
+    List<Task> tasksList = new ArrayList<>(createTasks(employees, tasks, skills));
+
 
    @Test
    public void printAllEmployees() {

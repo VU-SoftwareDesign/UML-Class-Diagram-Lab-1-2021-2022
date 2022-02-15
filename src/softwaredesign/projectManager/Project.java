@@ -3,6 +3,8 @@ package softwaredesign.projectManager;
 import java.util.*;
 
 public class Project {
+    //Use "this" for creating new instance of class in the parameters
+
     //Need to add a method to set status of projects :- Tracking projects: mark tasks as "ready to start" -"executing" - "finished".
     private final String name;
 
